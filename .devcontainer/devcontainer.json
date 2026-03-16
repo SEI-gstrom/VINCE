@@ -1,0 +1,42 @@
+{
+    "name": "${localWorkspaceFolderBasename}",
+    "build": {
+        "context": ".",
+        "dockerfile": "./Dockerfile"
+    },
+    "mounts": [
+        {
+            "type": "volume",
+            "source": "${localWorkspaceFolderBasename}-claude-data",
+            "target": "/home/vscode/.claude"
+        },
+        {
+            "type": "volume",
+            "source": "${localWorkspaceFolderBasename}-shell-history",
+            "target": "/home/vscode/.shell_history"
+        }
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "configureZshAsDefaultShell": true
+        },
+        "./features/claude-code": {}
+    },
+    "remoteEnv": {
+        "CLAUDE_CODE_USE_BEDROCK": "1"
+    },
+    "runArgs": [
+        "--name",
+        "${localWorkspaceFolderBasename}",
+        "--env-file",
+        ".devcontainer/devcontainer.env"
+    ],
+    "postCreateCommand": "bash -l .devcontainer/postcreate.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "anthropic.claude-code"
+            ]
+        }
+    }
+}
